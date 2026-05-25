@@ -55,7 +55,12 @@ function WaxSeal() {
           <stop offset="100%" stopColor="#3d160e" />
         </radialGradient>
         <filter id="sealShadow" x="-30%" y="-30%" width="160%" height="160%">
-          <feDropShadow dx="1.5" dy="2.5" stdDeviation="2" floodOpacity="0.55" />
+          <feDropShadow
+            dx="1.5"
+            dy="2.5"
+            stdDeviation="2"
+            floodOpacity="0.55"
+          />
         </filter>
       </defs>
 
@@ -89,14 +94,7 @@ function WaxSeal() {
           J
         </text>
         {/* tiny highlight */}
-        <ellipse
-          cx="36"
-          cy="28"
-          rx="9"
-          ry="5"
-          fill="#e8d8b0"
-          opacity="0.18"
-        />
+        <ellipse cx="36" cy="28" rx="9" ry="5" fill="#e8d8b0" opacity="0.18" />
       </g>
     </svg>
   );

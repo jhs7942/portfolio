@@ -31,8 +31,7 @@ const Frontispiece = forwardRef((props, ref) => {
             <br />
             First Edition · Bound by Hand
             <br />
-            Pohang · Anno Domini{" "}
-            <span className="imprint-roman">MMXXVI</span>
+            Pohang · Anno Domini <span className="imprint-roman">MMXXVI</span>
           </div>
         </div>
       </div>

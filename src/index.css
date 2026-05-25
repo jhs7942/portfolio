@@ -40,8 +40,12 @@ body {
 body {
   font-family: "EB Garamond", "Nanum Myeongjo", serif;
   color: var(--ink);
-  background:
-    radial-gradient(ellipse at 50% 40%, #3a2616 0%, #1a0e06 70%, #0a0502 100%);
+  background: radial-gradient(
+    ellipse at 50% 40%,
+    #3a2616 0%,
+    #1a0e06 70%,
+    #0a0502 100%
+  );
   min-height: 100vh;
   overflow: hidden;
 }
@@ -126,9 +130,21 @@ body::before {
   opacity: 0.55;
   mix-blend-mode: multiply;
   background:
-    radial-gradient(circle 6px at 20% 30%, rgba(122, 46, 32, 0.08), transparent 70%),
-    radial-gradient(circle 4px at 78% 65%, rgba(139, 111, 58, 0.1), transparent 70%),
-    radial-gradient(circle 8px at 60% 18%, rgba(139, 111, 58, 0.06), transparent 70%);
+    radial-gradient(
+      circle 6px at 20% 30%,
+      rgba(122, 46, 32, 0.08),
+      transparent 70%
+    ),
+    radial-gradient(
+      circle 4px at 78% 65%,
+      rgba(139, 111, 58, 0.1),
+      transparent 70%
+    ),
+    radial-gradient(
+      circle 8px at 60% 18%,
+      rgba(139, 111, 58, 0.06),
+      transparent 70%
+    );
 }
 .parchment-noise::after {
   content: "";
@@ -246,25 +262,23 @@ body::before {
   border-radius: 6px 2px 2px 6px;
 }
 .codex-cover--back .codex-cover__leather {
-  background:
-    radial-gradient(
-      ellipse at 70% 25%,
-      #4a2f1a 0%,
-      var(--leather) 60%,
-      #150904 100%
-    );
+  background: radial-gradient(
+    ellipse at 70% 25%,
+    #4a2f1a 0%,
+    var(--leather) 60%,
+    #150904 100%
+  );
 }
 
 .codex-cover__leather {
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(
-      ellipse at 30% 25%,
-      #4a2f1a 0%,
-      var(--leather) 60%,
-      #150904 100%
-    );
+  background: radial-gradient(
+    ellipse at 30% 25%,
+    #4a2f1a 0%,
+    var(--leather) 60%,
+    #150904 100%
+  );
 }
 
 /* 가죽 결 — SVG 노이즈 (data URI) */
@@ -366,8 +380,12 @@ body::before {
   color: rgba(201, 168, 119, 0.85);
   letter-spacing: 0.05em;
 }
-.codex-cover__author::before { content: "— "; }
-.codex-cover__author::after { content: " —"; }
+.codex-cover__author::before {
+  content: "— ";
+}
+.codex-cover__author::after {
+  content: " —";
+}
 
 .codex-cover__imprint {
   font-family: "Cormorant Garamond", serif;
