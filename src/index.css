@@ -76,9 +76,11 @@ body::before {
    PARCHMENT PAGE — 양피지 페이지 공용
    ============================================================ */
 
-/* 양피지 페이지의 루트 컨테이너 */
+/* 양피지 페이지의 루트 컨테이너
+   주의: position 을 절대로 지정하지 말 것.
+   react-pageflip 의 .stf__item { position: absolute } 가 적용되어야 한다.
+   여기에 position: relative 를 두면 flip 애니메이션 중에 페이지가 document flow 로 떨어진다. */
 .parchment-page {
-  position: relative;
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -230,7 +232,7 @@ body::before {
    FRONT COVER — 가죽 표지
    ============================================================ */
 .codex-cover {
-  position: relative;
+  /* position 을 지정하지 말 것 — react-pageflip 의 .stf__item position:absolute 가 적용되어야 함. */
   width: 100%;
   height: 100%;
   overflow: hidden;

@@ -76,6 +76,9 @@ const Book = (props) => {
       maxShadowOpacity={0.5}
       drawShadow={true}
       startPage={page}
+      showPageCorners={false}
+      // usePortrait={false}
+      renderOnlyPageLengthChange={true}
     >
       <FrontCover />
       <Frontispiece />
@@ -92,6 +95,7 @@ const Book = (props) => {
       <Page className="demoPage">Page 12</Page>
       <Page className="demoPage">Page 13</Page>
       <Page className="demoPage">Page 14</Page>
+      <Page className="demoPage">Page 15</Page>
       <Page className="demoPage">Page 15</Page>
       <BackCover className="demoPage">Page 16</BackCover>
     </HTMLFlipBook>
