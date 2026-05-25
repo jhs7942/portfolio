@@ -7,7 +7,8 @@ import Frontispiece from "./Frontispiece";
 
 const Book = (props) => {
   const bookRef = useRef(null);
-  const [page, setPage] = useState(0);
+  const sessionPage = Number(window.sessionStorage.getItem("page")) || 0;
+  const [page, setPage] = useState(sessionPage);
 
   const movePage = (command) => {
     const book = bookRef.current?.pageFlip();
@@ -24,6 +25,12 @@ const Book = (props) => {
   };
 
   useEffect(() => {
+    window.sessionStorage.setItem("page", page);
+  }, [page]);
+
+  useEffect(() => {
+    console.log("시작 페이지", page);
+
     const Wheelhandle = (e) => {
       if (e.defaultPrevented) {
         return; // 이미 이벤트가 실행되는 중이라면 아무 동작도 하지 않습니다.
@@ -68,6 +75,7 @@ const Book = (props) => {
       showCover={true}
       maxShadowOpacity={0.5}
       drawShadow={true}
+      startPage={page}
     >
       <FrontCover />
       <Frontispiece />
