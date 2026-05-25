@@ -1,0 +1,438 @@
+@import "tailwindcss";
+
+/* ============================================================
+   디자인 토큰 — The Codex of jhs
+   ============================================================ */
+:root {
+  /* 양피지 계열 — 4단계 톤 */
+  --parchment: #f5ebd4;
+  --parchment-aged: #e8d8b0;
+  --parchment-deep: #dcc795;
+
+  /* 잉크·세피아 계열 */
+  --wheat: #c9a877;
+  --sepia: #8b6f3a;
+  --sepia-light: #a38655;
+  --ink: #3d2a14;
+  --ink-soft: #5a4222;
+
+  /* 강조 — 봉랍 빨강 (1점 컬러) */
+  --wax-seal: #7a2e20;
+  --wax-seal-dark: #5a1f14;
+
+  /* 표지 — 가죽 어둠 */
+  --leather: #2a1a0e;
+  --leather-light: #3a2515;
+
+  /* 페이지 치수 */
+  --page-w: 540px;
+  --page-h: 740px;
+  --flip-duration: 900ms;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  font-family: "EB Garamond", "Nanum Myeongjo", serif;
+  color: var(--ink);
+  background:
+    radial-gradient(ellipse at 50% 40%, #3a2616 0%, #1a0e06 70%, #0a0502 100%);
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* 무대 조명 — 책상 위 스포트라이트 */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(
+      ellipse 80% 60% at 50% 60%,
+      rgba(122, 78, 32, 0.35),
+      transparent 65%
+    ),
+    radial-gradient(
+      ellipse 50% 30% at 50% 95%,
+      rgba(0, 0, 0, 0.55),
+      transparent 70%
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+#root {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+}
+
+/* ============================================================
+   PARCHMENT PAGE — 양피지 페이지 공용
+   ============================================================ */
+
+/* 양피지 페이지의 루트 컨테이너 */
+.parchment-page {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--parchment);
+  color: var(--ink);
+}
+
+/* 3-layer 배경 스택 */
+.parchment-bg {
+  position: absolute;
+  inset: 0;
+  background-color: var(--parchment);
+  background-image:
+    radial-gradient(
+      ellipse 60% 80% at 100% 50%,
+      rgba(139, 111, 58, 0.1),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 100% 70% at 50% 100%,
+      rgba(139, 111, 58, 0.07),
+      transparent 70%
+    );
+}
+.parchment-bg.verso {
+  background-image:
+    radial-gradient(
+      ellipse 60% 80% at 0% 50%,
+      rgba(139, 111, 58, 0.1),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 100% 70% at 50% 100%,
+      rgba(139, 111, 58, 0.07),
+      transparent 70%
+    );
+}
+
+.parchment-noise {
+  position: absolute;
+  inset: -2px;
+  pointer-events: none;
+  opacity: 0.55;
+  mix-blend-mode: multiply;
+  background:
+    radial-gradient(circle 6px at 20% 30%, rgba(122, 46, 32, 0.08), transparent 70%),
+    radial-gradient(circle 4px at 78% 65%, rgba(139, 111, 58, 0.1), transparent 70%),
+    radial-gradient(circle 8px at 60% 18%, rgba(139, 111, 58, 0.06), transparent 70%);
+}
+.parchment-noise::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.08;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='3'/><feColorMatrix values='0 0 0 0 0.31  0 0 0 0 0.22  0 0 0 0 0.10  0 0 0 0.5 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+.page-edge-shadow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow: inset 0 0 60px rgba(139, 111, 58, 0.3);
+  border-radius: inherit;
+}
+
+/* 본문 영역 — 페이지 패딩(verso/recto는 책등 쪽 여유) */
+.page-content {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  padding: 64px 56px;
+  display: flex;
+  flex-direction: column;
+}
+.page-content.recto {
+  padding-left: 76px;
+  padding-right: 56px;
+}
+.page-content.verso {
+  padding-left: 56px;
+  padding-right: 76px;
+}
+
+/* ============================================================
+   FRONTISPIECE — 속표지 (cover 뒤, 첫 양피지 페이지)
+   ============================================================ */
+.frontispiece-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  padding: 0 40px;
+}
+.frontispiece-ornament-top {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 22px;
+  color: var(--wheat);
+  letter-spacing: 0.6em;
+  margin-bottom: 36px;
+}
+.frontispiece-title {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 44px;
+  line-height: 1.1;
+  color: var(--ink);
+  margin: 0 0 14px;
+}
+.frontispiece-title .of {
+  font-weight: 400;
+  color: var(--ink-soft);
+}
+.frontispiece-sub {
+  font-family: "Cormorant Garamond", serif;
+  font-variant: small-caps;
+  letter-spacing: 0.32em;
+  font-size: 12px;
+  color: var(--sepia);
+  text-transform: lowercase;
+  margin-bottom: 30px;
+}
+.frontispiece-rule {
+  width: 80px;
+  height: 1px;
+  background: var(--wheat);
+  margin: 6px 0 22px;
+  opacity: 0.7;
+}
+.frontispiece-imprint {
+  margin-top: 44px;
+  font-family: "Cormorant Garamond", serif;
+  font-variant: small-caps;
+  letter-spacing: 0.24em;
+  font-size: 11px;
+  color: var(--sepia);
+  line-height: 1.95;
+  text-transform: lowercase;
+}
+.frontispiece-imprint .imprint-roman {
+  letter-spacing: 0.4em;
+  color: var(--sepia-light);
+}
+
+/* ============================================================
+   FRONT COVER — 가죽 표지
+   ============================================================ */
+.codex-cover {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 2px 6px 6px 2px;
+  color: var(--parchment);
+  user-select: none;
+}
+
+/* 뒷표지 — 책등(왼쪽) 기준으로 모서리를 뒤집음 */
+.codex-cover--back {
+  border-radius: 6px 2px 2px 6px;
+}
+.codex-cover--back .codex-cover__leather {
+  background:
+    radial-gradient(
+      ellipse at 70% 25%,
+      #4a2f1a 0%,
+      var(--leather) 60%,
+      #150904 100%
+    );
+}
+
+.codex-cover__leather {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      ellipse at 30% 25%,
+      #4a2f1a 0%,
+      var(--leather) 60%,
+      #150904 100%
+    );
+}
+
+/* 가죽 결 — SVG 노이즈 (data URI) */
+.codex-cover__noise {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.35;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><filter id='l'><feTurbulence type='fractalNoise' baseFrequency='0.55' numOctaves='3' seed='11'/><feColorMatrix values='0 0 0 0 0.08  0 0 0 0 0.04  0 0 0 0 0.02  0 0 0 0.45 0'/></filter><rect width='100%' height='100%' filter='url(%23l)'/></svg>");
+}
+
+/* 금박 내부 테두리 */
+.codex-cover__border {
+  position: absolute;
+  inset: 22px;
+  border: 1px solid rgba(201, 168, 119, 0.35);
+  border-radius: 3px;
+  box-shadow:
+    inset 0 0 0 6px rgba(201, 168, 119, 0.05),
+    inset 0 0 60px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+}
+
+.codex-cover__content {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 80px 40px 70px;
+  text-align: center;
+}
+
+.codex-cover__eyebrow {
+  font-family: "Cormorant Garamond", serif;
+  font-variant: small-caps;
+  letter-spacing: 0.5em;
+  font-size: 11px;
+  color: rgba(201, 168, 119, 0.7);
+  text-transform: lowercase;
+}
+
+.codex-cover__center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.codex-cover__ornament-top {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 22px;
+  color: rgba(201, 168, 119, 0.65);
+  letter-spacing: 0.3em;
+  margin-bottom: 6px;
+}
+
+.codex-cover__title {
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 500;
+  font-size: 56px;
+  line-height: 1.05;
+  color: #e8d8b0;
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.45);
+  font-style: italic;
+  margin: 0;
+  text-align: center;
+}
+
+.codex-cover__of {
+  font-style: italic;
+  color: rgba(232, 216, 176, 0.75);
+  font-weight: 400;
+}
+
+.codex-cover__subtitle {
+  font-family: "Cormorant Garamond", serif;
+  font-variant: small-caps;
+  letter-spacing: 0.35em;
+  font-size: 13px;
+  color: rgba(201, 168, 119, 0.85);
+  text-transform: lowercase;
+  margin-top: 4px;
+}
+
+.codex-cover__seal {
+  width: 86px;
+  height: 86px;
+  margin: 14px 0 8px;
+}
+
+.codex-cover__author {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 16px;
+  color: rgba(201, 168, 119, 0.85);
+  letter-spacing: 0.05em;
+}
+.codex-cover__author::before { content: "— "; }
+.codex-cover__author::after { content: " —"; }
+
+.codex-cover__imprint {
+  font-family: "Cormorant Garamond", serif;
+  font-variant: small-caps;
+  letter-spacing: 0.24em;
+  font-size: 11px;
+  color: rgba(201, 168, 119, 0.6);
+  line-height: 1.8;
+  text-transform: lowercase;
+}
+
+/* ============================================================
+   BACK COVER — 뒷표지 (sparse, dignified)
+   ============================================================ */
+.codex-back__top {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 18px;
+  color: rgba(201, 168, 119, 0.5);
+  letter-spacing: 0.8em;
+  padding-left: 0.8em;
+}
+
+.codex-back__center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+.codex-back__ornament {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 56px;
+  line-height: 1;
+  color: rgba(201, 168, 119, 0.7);
+  filter: drop-shadow(0 2px 0 rgba(0, 0, 0, 0.5));
+}
+
+.codex-back__rule {
+  width: 90px;
+  height: 1px;
+  background: rgba(201, 168, 119, 0.4);
+}
+
+.codex-back__epitaph {
+  font-family: "Cormorant Garamond", serif;
+  font-variant: small-caps;
+  letter-spacing: 0.5em;
+  font-size: 11px;
+  color: rgba(201, 168, 119, 0.6);
+  text-transform: lowercase;
+  padding-left: 0.5em;
+}
+
+.codex-back__colophon {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 13px;
+  color: rgba(201, 168, 119, 0.55);
+  text-align: center;
+  line-height: 1.7;
+}
+.codex-back__colophon .mark {
+  font-style: normal;
+  font-variant: small-caps;
+  letter-spacing: 0.3em;
+  color: rgba(201, 168, 119, 0.4);
+  font-size: 10px;
+  display: block;
+  margin-top: 6px;
+}
