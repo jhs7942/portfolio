@@ -1,16 +1,55 @@
 import HTMLFlipBook from "react-pageflip";
-import Page from "./Pages";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import FrontCover from "./FrontCover";
 import BackCover from "./BackCover";
 import Frontispiece from "./Frontispiece";
+import {
+  AiQuizOpener,
+  AiQuizContext,
+  AiQuizProblem,
+  AiQuizAnalyze,
+  AiQuizHypothesis,
+  AiQuizActionDesign,
+  AiQuizActionRetro,
+  AiQuizResultMetrics,
+  AiQuizResultReach,
+  AiQuizLearnings,
+  AiQuizMeta,
+} from "./AiQuiz";
+import {
+  FlowOrigin,
+  FlowPivots,
+  FlowIssuesTech,
+  FlowIssuesPeople,
+  FlowFixesStructure,
+  FlowFixesEvidence,
+} from "./AiQuizFlow";
+import {
+  TableOfContentsLeft,
+  TableOfContentsRight,
+} from "./TableOfContents";
+import {
+  SmartCityOpener,
+  SmartCityScope,
+  SmartCityTrouble,
+  SmartCityRetro,
+  GyeongbukOpener,
+  GyeongbukScope,
+  GyeongbukTrouble,
+  GyeongbukRetro,
+  KCityOpener,
+  KCityScope,
+  KCityTrouble,
+  KCityRetro,
+} from "./SIChapters";
+import { CHAPTERS, chapterIndexForPage } from "./chapters";
 
-const Book = (props) => {
+const Book = () => {
   const bookRef = useRef(null);
   const sessionPage = Number(window.sessionStorage.getItem("page")) || 0;
   const [page, setPage] = useState(sessionPage);
 
-  const movePage = (command) => {
+  const movePage = useCallback((command) => {
     const book = bookRef.current?.pageFlip();
     if (!book) return;
 
@@ -22,30 +61,27 @@ const Book = (props) => {
         book.flipPrev();
         break;
     }
-  };
+  }, []);
+
+  const goToPage = useCallback((targetPage) => {
+    const book = bookRef.current?.pageFlip();
+    if (!book) return;
+    book.flip(targetPage);
+  }, []);
 
   useEffect(() => {
     window.sessionStorage.setItem("page", page);
   }, [page]);
 
   useEffect(() => {
-    console.log("시작 페이지", page);
-
     const Wheelhandle = (e) => {
-      if (e.defaultPrevented) {
-        return; // 이미 이벤트가 실행되는 중이라면 아무 동작도 하지 않습니다.
-      }
-      if (e.deltaY > 0) {
-        movePage("next");
-      } else {
-        movePage("prev");
-      }
+      if (e.defaultPrevented) return;
+      if (e.deltaY > 0) movePage("next");
+      else movePage("prev");
     };
 
     const KendownHandle = (e) => {
-      if (e.defaultPrevented) {
-        return; // 이미 이벤트가 실행되는 중이라면 아무 동작도 하지 않습니다.
-      }
+      if (e.defaultPrevented) return;
       switch (e.key) {
         case "ArrowRight":
           movePage("next");
@@ -56,7 +92,6 @@ const Book = (props) => {
       }
     };
 
-    // 컴포넌트 마운트 시 전역 이벤트 리스터 등록
     window.addEventListener("wheel", Wheelhandle);
     window.addEventListener("keydown", KendownHandle);
 
@@ -64,41 +99,76 @@ const Book = (props) => {
       window.removeEventListener("wheel", Wheelhandle);
       window.removeEventListener("keydown", KendownHandle);
     };
-  }, []);
+  }, [movePage]);
+
+  const activeChapter = chapterIndexForPage(page);
 
   return (
-    <HTMLFlipBook
-      ref={bookRef}
-      width={540}
-      height={740}
-      onFlip={(e) => setPage(e.data)}
-      showCover={true}
-      maxShadowOpacity={0.5}
-      drawShadow={true}
-      startPage={page}
-      showPageCorners={false}
-      // usePortrait={false}
-      renderOnlyPageLengthChange={true}
-    >
-      <FrontCover />
-      <Frontispiece />
-      <Page className="demoPage">Page 2</Page>
-      <Page className="demoPage">Page 3</Page>
-      <Page className="demoPage">Page 4</Page>
-      <Page className="demoPage">Page 5</Page>
-      <Page className="demoPage">Page 6</Page>
-      <Page className="demoPage">Page 7</Page>
-      <Page className="demoPage">Page 8</Page>
-      <Page className="demoPage">Page 9</Page>
-      <Page className="demoPage">Page 10</Page>
-      <Page className="demoPage">Page 11</Page>
-      <Page className="demoPage">Page 12</Page>
-      <Page className="demoPage">Page 13</Page>
-      <Page className="demoPage">Page 14</Page>
-      <Page className="demoPage">Page 15</Page>
-      <Page className="demoPage">Page 15</Page>
-      <BackCover className="demoPage">Page 16</BackCover>
-    </HTMLFlipBook>
+    <div className="book-stage">
+      <HTMLFlipBook
+        ref={bookRef}
+        width={540}
+        height={740}
+        onFlip={(e) => setPage(e.data)}
+        showCover={true}
+        maxShadowOpacity={0.5}
+        drawShadow={true}
+        startPage={page}
+        showPageCorners={false}
+        renderOnlyPageLengthChange={true}
+      >
+        <FrontCover />
+        <Frontispiece />
+        <TableOfContentsLeft onJump={goToPage} />
+        <TableOfContentsRight onJump={goToPage} />
+        <AiQuizOpener />
+        <AiQuizContext />
+        <AiQuizProblem />
+        <AiQuizAnalyze />
+        <AiQuizHypothesis />
+        <AiQuizActionDesign />
+        <AiQuizActionRetro />
+        <AiQuizResultMetrics />
+        <AiQuizResultReach />
+        <AiQuizLearnings />
+        <AiQuizMeta />
+        <FlowOrigin />
+        <FlowPivots />
+        <FlowIssuesTech />
+        <FlowIssuesPeople />
+        <FlowFixesStructure />
+        <FlowFixesEvidence />
+        <SmartCityOpener />
+        <SmartCityScope />
+        <SmartCityTrouble />
+        <SmartCityRetro />
+        <GyeongbukOpener />
+        <GyeongbukScope />
+        <GyeongbukTrouble />
+        <GyeongbukRetro />
+        <KCityOpener />
+        <KCityScope />
+        <KCityTrouble />
+        <KCityRetro />
+        <BackCover />
+      </HTMLFlipBook>
+
+      <nav className="thumb-index" aria-label="챕터 색인">
+        <div className="thumb-index-label">색인</div>
+        {CHAPTERS.map((ch, i) => (
+          <button
+            key={ch.id}
+            type="button"
+            className={`thumb-tab ${i === activeChapter ? "active" : ""}`}
+            onClick={() => goToPage(ch.page)}
+            title={`${ch.title} (p.${ch.page})`}
+          >
+            <span className="thumb-roman">{ch.roman}</span>
+            <span className="thumb-short">{ch.short}</span>
+          </button>
+        ))}
+      </nav>
+    </div>
   );
 };
 

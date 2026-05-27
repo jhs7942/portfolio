@@ -456,3 +456,895 @@ body::before {
   display: block;
   margin-top: 6px;
 }
+
+/* ============================================================
+   CHAPTER PAGES — AI Quiz (Chapter I)
+   본문 페이지 공통 타이포 & 인쇄 요소
+   ============================================================ */
+
+.chapter-page {
+  padding: 56px 56px 64px;
+  font-family: "EB Garamond", "Nanum Myeongjo", serif;
+  color: var(--ink);
+  font-size: 13.5px;
+  line-height: 1.62;
+}
+.chapter-page.recto {
+  padding-left: 72px;
+  padding-right: 50px;
+}
+.chapter-page.verso {
+  padding-left: 50px;
+  padding-right: 72px;
+}
+
+/* running head & folio (책의 머리·발) */
+.chapter-runhead {
+  font-family: "Cormorant Garamond", serif;
+  font-variant: small-caps;
+  letter-spacing: 0.32em;
+  font-size: 10.5px;
+  color: var(--sepia);
+  text-transform: lowercase;
+  text-align: center;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(139, 111, 58, 0.25);
+  margin-bottom: 18px;
+  flex-shrink: 0;
+}
+
+.chapter-folio {
+  position: absolute;
+  bottom: 28px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-family: "Cormorant Garamond", serif;
+  font-variant: small-caps;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: var(--sepia-light);
+}
+
+.chapter-body {
+  flex: 1;
+  overflow: hidden;
+}
+
+/* 섹션 헤딩 */
+.sec-title {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 26px;
+  line-height: 1.15;
+  color: var(--ink);
+  margin: 0 0 14px;
+  letter-spacing: 0.01em;
+}
+
+.sec-sub {
+  font-family: "Cormorant Garamond", serif;
+  font-variant: small-caps;
+  letter-spacing: 0.18em;
+  font-size: 12px;
+  color: var(--wax-seal);
+  text-transform: lowercase;
+  margin: 18px 0 6px;
+  font-weight: 600;
+}
+
+.sec-lede {
+  font-size: 14px;
+  margin: 0 0 14px;
+  color: var(--ink-soft);
+}
+.sec-lede strong {
+  color: var(--ink);
+}
+
+.chapter-body p {
+  margin: 0 0 10px;
+}
+.chapter-body p + p {
+  text-indent: 0;
+}
+.chapter-body em {
+  font-style: italic;
+  color: var(--ink-soft);
+}
+.chapter-body strong {
+  color: var(--wax-seal);
+  font-weight: 600;
+}
+
+/* 정의 리스트 (Context, Reach) */
+.sec-defs {
+  margin: 8px 0 0;
+}
+.sec-defs > div {
+  display: grid;
+  grid-template-columns: 78px 1fr;
+  column-gap: 14px;
+  padding: 6px 0;
+  border-bottom: 1px dotted rgba(139, 111, 58, 0.22);
+}
+.sec-defs > div:last-child {
+  border-bottom: none;
+}
+.sec-defs dt {
+  font-family: "Cormorant Garamond", serif;
+  font-variant: small-caps;
+  letter-spacing: 0.16em;
+  font-size: 11px;
+  color: var(--sepia);
+  text-transform: lowercase;
+  padding-top: 2px;
+}
+.sec-defs dd {
+  margin: 0;
+  font-size: 12.8px;
+  line-height: 1.55;
+}
+
+/* 리스트 */
+.sec-list,
+.sec-ol {
+  margin: 4px 0 10px;
+  padding-left: 18px;
+}
+.sec-list li,
+.sec-ol li {
+  margin-bottom: 4px;
+  font-size: 13px;
+  line-height: 1.55;
+}
+.sec-list--tight li {
+  margin-bottom: 2px;
+}
+.sec-list {
+  list-style: none;
+  padding-left: 4px;
+}
+.sec-list li::before {
+  content: "❦";
+  color: var(--wheat);
+  font-size: 10px;
+  margin-right: 8px;
+  vertical-align: 1px;
+}
+.sec-ol {
+  list-style: none;
+  counter-reset: sec-ol;
+  padding-left: 0;
+}
+.sec-ol > li {
+  counter-increment: sec-ol;
+  position: relative;
+  padding-left: 28px;
+}
+.sec-ol > li::before {
+  content: counter(sec-ol, upper-roman) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  color: var(--wax-seal);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+}
+
+/* 표 */
+.sec-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 6px 0 12px;
+  font-size: 12.5px;
+}
+.sec-table th,
+.sec-table td {
+  text-align: left;
+  padding: 7px 8px;
+  border-bottom: 1px solid rgba(139, 111, 58, 0.25);
+  vertical-align: top;
+}
+.sec-table th {
+  font-family: "Cormorant Garamond", serif;
+  font-variant: small-caps;
+  letter-spacing: 0.16em;
+  font-size: 10.5px;
+  color: var(--sepia);
+  text-transform: lowercase;
+  font-weight: 600;
+  border-bottom: 1.5px solid rgba(139, 111, 58, 0.5);
+}
+.sec-table .td-sub {
+  font-size: 11px;
+  color: var(--sepia);
+  margin-top: 2px;
+  font-style: italic;
+}
+.sec-table .td-verdict {
+  font-family: "Cormorant Garamond", serif;
+  font-variant: small-caps;
+  letter-spacing: 0.16em;
+  font-size: 11px;
+  color: var(--sepia);
+  text-transform: lowercase;
+  white-space: nowrap;
+  text-align: right;
+}
+.sec-table .td-verdict.pick {
+  color: var(--wax-seal);
+  font-weight: 700;
+}
+.sec-table .td-verdict.fail {
+  color: var(--wax-seal-dark);
+  font-style: italic;
+}
+.sec-table .row-pick td {
+  background: rgba(201, 168, 119, 0.13);
+}
+.sec-table .row-counter td {
+  background: rgba(122, 46, 32, 0.06);
+}
+.sec-table--metrics td:nth-child(2) {
+  font-style: italic;
+  color: var(--ink-soft);
+}
+
+/* 콜아웃 박스 */
+.callout {
+  margin: 12px 0;
+  padding: 10px 14px;
+  background: rgba(201, 168, 119, 0.13);
+  border-left: 2px solid var(--wax-seal);
+  font-size: 12.5px;
+}
+.callout-title {
+  font-family: "Cormorant Garamond", serif;
+  font-variant: small-caps;
+  letter-spacing: 0.18em;
+  font-size: 11px;
+  color: var(--wax-seal);
+  text-transform: lowercase;
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+.callout-body {
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+
+/* 인용 */
+.chapter-body .quote {
+  margin: 10px 16px;
+  padding-left: 14px;
+  border-left: 2px solid var(--wheat);
+  font-style: italic;
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+/* sec-note: 종결성 강조 박스 (얇은 윗·아랫줄) */
+.sec-note {
+  margin: 12px 0;
+  padding: 8px 4px;
+  border-top: 1px solid rgba(139, 111, 58, 0.3);
+  border-bottom: 1px solid rgba(139, 111, 58, 0.3);
+  font-size: 12.8px;
+  color: var(--ink-soft);
+}
+
+/* Learnings — 굵은 번호 리스트 */
+.learnings-ol {
+  list-style: none;
+  counter-reset: learn;
+  padding: 0;
+  margin: 8px 0 0;
+}
+.learnings-ol > li {
+  counter-increment: learn;
+  position: relative;
+  padding: 8px 0 8px 38px;
+  border-bottom: 1px dotted rgba(139, 111, 58, 0.25);
+}
+.learnings-ol > li:last-child {
+  border-bottom: none;
+}
+.learnings-ol > li::before {
+  content: counter(learn);
+  position: absolute;
+  left: 0;
+  top: 10px;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 16px;
+  color: var(--parchment);
+  background: var(--wax-seal);
+  border-radius: 50%;
+}
+.learn-head {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 15px;
+  color: var(--ink);
+  margin-bottom: 2px;
+}
+.learn-body {
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+
+/* ============================================================
+   CHAPTER OPENER — 챕터 표제지
+   ============================================================ */
+.chapter-opener {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px 50px 70px;
+}
+.opener-eyebrow {
+  font-family: "Cormorant Garamond", serif;
+  font-variant: small-caps;
+  letter-spacing: 0.5em;
+  font-size: 12px;
+  color: var(--sepia);
+  text-transform: lowercase;
+  margin-bottom: 24px;
+}
+.opener-ornament {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 22px;
+  color: var(--wheat);
+  letter-spacing: 0.4em;
+  margin-bottom: 18px;
+}
+.opener-title {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 52px;
+  line-height: 1;
+  color: var(--ink);
+  margin: 0 0 18px;
+}
+.opener-title .opener-mark {
+  color: var(--wax-seal);
+  margin-left: 6px;
+  font-style: normal;
+}
+.opener-tagline {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 15px;
+  color: var(--ink-soft);
+  line-height: 1.5;
+  margin: 0 0 22px;
+}
+.opener-rule {
+  width: 90px;
+  height: 1px;
+  background: var(--wheat);
+  margin: 0 0 22px;
+}
+.opener-epigraph {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 13px;
+  color: var(--sepia);
+  line-height: 1.6;
+  margin-bottom: 30px;
+  max-width: 360px;
+}
+.opener-epigraph em {
+  font-style: italic;
+}
+.opener-meta {
+  width: 100%;
+  max-width: 360px;
+  margin-top: 8px;
+  border-top: 1px solid rgba(139, 111, 58, 0.3);
+  border-bottom: 1px solid rgba(139, 111, 58, 0.3);
+  padding: 10px 0;
+}
+.opener-meta > div {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  column-gap: 12px;
+  padding: 4px 0;
+  text-align: left;
+}
+.opener-meta .meta-key {
+  font-family: "Cormorant Garamond", serif;
+  font-variant: small-caps;
+  letter-spacing: 0.18em;
+  font-size: 10.5px;
+  color: var(--sepia);
+  text-transform: lowercase;
+  padding-top: 2px;
+}
+.opener-meta .meta-val {
+  font-size: 12px;
+  color: var(--ink);
+  line-height: 1.4;
+}
+
+/* ============================================================
+   CHAPTER END — 챕터 종결 장식
+   ============================================================ */
+.chapter-end {
+  margin-top: 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.end-ornament {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 28px;
+  color: var(--wax-seal);
+}
+.end-text {
+  font-family: "Cormorant Garamond", serif;
+  font-variant: small-caps;
+  letter-spacing: 0.4em;
+  font-size: 10.5px;
+  color: var(--sepia);
+  text-transform: lowercase;
+}
+
+/* ============================================================
+   CHAPTER II — 사고의 흐름 (Thought Flow)
+   ============================================================ */
+
+/* Ch.II opener block — Ch.I 마지막 다음 첫 페이지의 헤더 */
+.ch2-opener {
+  text-align: center;
+  margin-bottom: 18px;
+}
+.ch2-eyebrow {
+  font-family: "Cormorant Garamond", serif;
+  font-variant: small-caps;
+  letter-spacing: 0.5em;
+  font-size: 10.5px;
+  color: var(--sepia);
+  text-transform: lowercase;
+  margin-bottom: 6px;
+}
+.ch2-title {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 30px;
+  line-height: 1.1;
+  color: var(--ink);
+  margin: 0 0 4px;
+}
+.ch2-subtitle {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 12px;
+  color: var(--sepia);
+  margin: 0;
+}
+.ch2-rule {
+  width: 70px;
+  height: 1px;
+  background: var(--wheat);
+  margin: 12px auto 0;
+}
+
+/* flow-step — 계기(origin) 페이지: 큰 번호 + 본문 */
+.flow-step {
+  display: grid;
+  grid-template-columns: 38px 1fr;
+  column-gap: 14px;
+  padding: 8px 0;
+  border-bottom: 1px dotted rgba(139, 111, 58, 0.22);
+}
+.flow-step:last-child {
+  border-bottom: none;
+}
+.flow-step-mark {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 22px;
+  color: var(--wax-seal);
+  line-height: 1;
+  padding-top: 3px;
+}
+.flow-step-head {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 14.5px;
+  color: var(--ink);
+  margin-bottom: 2px;
+}
+.flow-step-body p {
+  font-size: 12.8px;
+  line-height: 1.55;
+  margin: 0;
+  color: var(--ink-soft);
+}
+.flow-step-body strong {
+  color: var(--ink);
+}
+
+/* pivot-block — 방향 전환 페이지 */
+.pivot-block {
+  margin: 12px 0;
+  padding: 10px 14px 12px;
+  background: rgba(201, 168, 119, 0.1);
+  border-left: 2px solid var(--wheat);
+}
+.pivot-block:first-of-type {
+  border-left-color: var(--wax-seal);
+}
+.pivot-time {
+  font-family: "Cormorant Garamond", serif;
+  font-variant: small-caps;
+  letter-spacing: 0.2em;
+  font-size: 10.5px;
+  color: var(--wax-seal);
+  text-transform: lowercase;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+.pivot-block p {
+  font-size: 12.8px;
+  line-height: 1.55;
+  margin: 0 0 6px;
+  color: var(--ink-soft);
+}
+.pivot-block p:last-child {
+  margin-bottom: 0;
+}
+.pivot-block strong {
+  color: var(--ink);
+}
+.pivot-arrow {
+  font-style: italic;
+  border-top: 1px dotted rgba(139, 111, 58, 0.3);
+  padding-top: 6px;
+  margin-top: 6px !important;
+}
+
+/* log-entry — 이슈/픽스 로그 카드 */
+.log-entry {
+  display: grid;
+  grid-template-columns: 78px 1fr;
+  column-gap: 12px;
+  padding: 8px 0 8px;
+  border-bottom: 1px dotted rgba(139, 111, 58, 0.25);
+}
+.log-entry:last-of-type {
+  border-bottom: none;
+}
+.log-id {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  font-family: "Courier New", "EB Garamond", monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  color: var(--parchment);
+  background: var(--ink-soft);
+  padding: 3px 6px;
+  border-radius: 2px;
+  height: fit-content;
+  text-align: center;
+  font-weight: 700;
+  margin-top: 2px;
+}
+.log-head {
+  grid-column: 2;
+}
+.log-body {
+  grid-column: 2;
+}
+.log-id.fix {
+  background: var(--wax-seal);
+}
+.log-head {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 14.5px;
+  color: var(--ink);
+  margin-bottom: 3px;
+  line-height: 1.25;
+}
+.log-body {
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+.log-body strong {
+  color: var(--ink);
+}
+.log-body code {
+  font-family: "Courier New", monospace;
+  font-size: 11.5px;
+  background: rgba(139, 111, 58, 0.12);
+  padding: 1px 4px;
+  border-radius: 2px;
+  color: var(--ink);
+}
+
+/* fix → issue 참조선 */
+.fix-target {
+  display: block;
+  font-family: "Cormorant Garamond", serif;
+  font-variant: small-caps;
+  letter-spacing: 0.16em;
+  font-size: 10px;
+  color: var(--sepia);
+  text-transform: lowercase;
+  margin-bottom: 4px;
+}
+
+/* 인라인 인용 — log-body 안에서 한 줄 짧게 */
+.quote-inline {
+  display: block;
+  font-style: italic;
+  color: var(--ink);
+  border-left: 2px solid var(--wheat);
+  padding: 2px 0 2px 10px;
+  margin: 4px 0;
+}
+
+/* ============================================================
+   BOOK STAGE — 책 + 색인 묶음 컨테이너
+   landscape 모드에서 책은 두 페이지(2×540=1080) 펼침이라
+   stage 너비도 그 이상이 되도록 확보.
+   ============================================================ */
+.book-stage {
+  position: relative;
+  width: 1080px;
+  height: 740px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ============================================================
+   THUMB INDEX — 책 우측 챕터 색인 탭
+   ============================================================ */
+.thumb-index {
+  position: absolute;
+  right: -120px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px 12px;
+  background: rgba(20, 12, 6, 0.55);
+  border: 1px solid rgba(201, 168, 119, 0.25);
+  border-radius: 4px;
+  box-shadow:
+    inset 0 0 30px rgba(0, 0, 0, 0.4),
+    0 6px 16px rgba(0, 0, 0, 0.5);
+  z-index: 5;
+}
+
+.thumb-index-label {
+  font-family: "Cormorant Garamond", serif;
+  font-variant: small-caps;
+  letter-spacing: 0.4em;
+  font-size: 10px;
+  color: rgba(201, 168, 119, 0.6);
+  text-align: center;
+  padding-bottom: 8px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid rgba(201, 168, 119, 0.2);
+}
+
+.thumb-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 8px 10px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-left: 2px solid rgba(201, 168, 119, 0.25);
+  color: rgba(201, 168, 119, 0.65);
+  cursor: pointer;
+  font-family: "Cormorant Garamond", serif;
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease;
+  text-align: left;
+}
+.thumb-tab:hover {
+  background: rgba(201, 168, 119, 0.08);
+  color: rgba(232, 216, 176, 0.95);
+  border-left-color: rgba(201, 168, 119, 0.6);
+}
+.thumb-tab.active {
+  background: rgba(122, 46, 32, 0.35);
+  border: 1px solid rgba(201, 168, 119, 0.5);
+  border-left: 2px solid var(--wax-seal);
+  color: #e8d8b0;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.4);
+}
+.thumb-roman {
+  font-style: italic;
+  font-size: 14px;
+  letter-spacing: 0.05em;
+  line-height: 1;
+}
+.thumb-short {
+  font-variant: small-caps;
+  letter-spacing: 0.18em;
+  font-size: 10.5px;
+  text-transform: lowercase;
+  white-space: nowrap;
+}
+
+/* ============================================================
+   TABLE OF CONTENTS — 챕터 색인 페이지
+   ============================================================ */
+.toc-eyebrow {
+  font-family: "Cormorant Garamond", serif;
+  font-variant: small-caps;
+  letter-spacing: 0.4em;
+  font-size: 10.5px;
+  color: var(--sepia);
+  text-transform: lowercase;
+  text-align: center;
+  margin-bottom: 8px;
+}
+.toc-title-head {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 38px;
+  text-align: center;
+  margin: 0 0 4px;
+  color: var(--ink);
+}
+.toc-rule {
+  width: 80px;
+  height: 1px;
+  background: var(--wheat);
+  margin: 8px auto 18px;
+}
+.toc-section {
+  margin: 14px 0;
+}
+.toc-section-head {
+  font-family: "Cormorant Garamond", serif;
+  font-variant: small-caps;
+  letter-spacing: 0.22em;
+  font-size: 11px;
+  color: var(--wax-seal);
+  text-transform: lowercase;
+  margin-bottom: 8px;
+  font-weight: 600;
+  border-bottom: 1px dotted rgba(139, 111, 58, 0.3);
+  padding-bottom: 4px;
+}
+
+.toc-item {
+  display: grid;
+  grid-template-columns: 40px 1fr auto auto;
+  align-items: baseline;
+  column-gap: 10px;
+  width: 100%;
+  padding: 8px 6px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px dotted rgba(139, 111, 58, 0.2);
+  cursor: pointer;
+  font-family: "EB Garamond", "Nanum Myeongjo", serif;
+  color: var(--ink);
+  text-align: left;
+  transition: background 0.16s ease;
+}
+.toc-item:hover {
+  background: rgba(201, 168, 119, 0.12);
+}
+.toc-item:last-child {
+  border-bottom: none;
+}
+.toc-roman {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 17px;
+  color: var(--wax-seal);
+  letter-spacing: 0.04em;
+}
+.toc-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+.toc-text .toc-title {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 15px;
+  color: var(--ink);
+  line-height: 1.2;
+}
+.toc-text .toc-sub {
+  font-size: 11px;
+  color: var(--ink-soft);
+  line-height: 1.3;
+}
+.toc-text .toc-period {
+  font-family: "Cormorant Garamond", serif;
+  font-variant: small-caps;
+  letter-spacing: 0.14em;
+  font-size: 9.5px;
+  color: var(--sepia);
+  text-transform: lowercase;
+  margin-top: 2px;
+}
+.toc-dots {
+  flex: 0 1 auto;
+  border-bottom: 1.5px dotted rgba(139, 111, 58, 0.5);
+  min-width: 12px;
+  align-self: end;
+  margin-bottom: 4px;
+}
+.toc-page {
+  font-family: "Cormorant Garamond", serif;
+  font-variant: small-caps;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: var(--sepia);
+  align-self: end;
+  margin-bottom: 2px;
+}
+
+.toc-spillover {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(139, 111, 58, 0.25);
+  font-size: 12px;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+.toc-spillover-mark {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 18px;
+  color: var(--wheat);
+  letter-spacing: 0.3em;
+  margin-bottom: 6px;
+}
+.toc-spillover em {
+  font-style: italic;
+  color: var(--ink);
+}
+
+/* ============================================================
+   PROJECT OPENER — SI 챕터 표제지 (verso, .chapter-opener 위에 얹음)
+   ============================================================ */
+.project-opener {
+  padding: 60px 60px 60px 50px;
+}
+.project-opener .opener-title {
+  font-size: 38px;
+}
+.project-opener .opener-tagline {
+  font-size: 14px;
+}
+.project-opener .opener-meta {
+  max-width: 380px;
+}
+.project-opener .opener-meta .meta-key {
+  width: 50px;
+}
