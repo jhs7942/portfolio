@@ -1,42 +1,33 @@
 import { forwardRef } from "react";
+import { bookMeta } from "../data/projectBook";
 
 const FrontCover = forwardRef((props, ref) => {
   return (
-    <div ref={ref} className="codex-cover" data-density="hard">
+    <section ref={ref} className="codex-cover" data-density="hard">
       <div className="codex-cover__leather" />
-      <div className="codex-cover__noise" />
+      <div className="codex-cover__grain" />
       <div className="codex-cover__border" />
 
       <div className="codex-cover__content">
-        <div className="codex-cover__eyebrow">An Interactive Portfolio</div>
+        <p className="codex-cover__eyebrow">Portfolio Casebook</p>
 
         <div className="codex-cover__center">
-          <div className="codex-cover__ornament-top">⁂</div>
-
+          <p className="codex-cover__folio">Vol. I</p>
           <h1 className="codex-cover__title">
-            The Codex
-            <br />
-            <span className="codex-cover__of">of</span> jhs
+            {bookMeta.title}
+            <span>{bookMeta.subtitle}</span>
           </h1>
-
-          <div className="codex-cover__subtitle">
-            A Frontend Developer&apos;s Storybook
-          </div>
-
           <WaxSeal />
-
-          <div className="codex-cover__author">Jeong Hyun-seung</div>
+          <p className="codex-cover__author">Jeong Hyun-seung</p>
         </div>
 
-        <div className="codex-cover__imprint">
-          Bound in Pohang
+        <p className="codex-cover__imprint">
+          Constraint Driven Product Story
           <br />
-          Set in Garamond &amp; Myeongjo
-          <br />
-          Anno Domini · MMXXVI
-        </div>
+          SSAFY Project Portfolio 2026
+        </p>
       </div>
-    </div>
+    </section>
   );
 });
 
@@ -50,51 +41,33 @@ function WaxSeal() {
     >
       <defs>
         <radialGradient id="waxRed" cx="35%" cy="32%" r="68%">
-          <stop offset="0%" stopColor="#a64a3a" />
-          <stop offset="55%" stopColor="#7a2e20" />
-          <stop offset="100%" stopColor="#3d160e" />
+          <stop offset="0%" stopColor="#d15a45" />
+          <stop offset="56%" stopColor="#8f2f24" />
+          <stop offset="100%" stopColor="#43130f" />
         </radialGradient>
         <filter id="sealShadow" x="-30%" y="-30%" width="160%" height="160%">
-          <feDropShadow
-            dx="1.5"
-            dy="2.5"
-            stdDeviation="2"
-            floodOpacity="0.55"
-          />
+          <feDropShadow dx="1.5" dy="2.5" stdDeviation="2" floodOpacity="0.5" />
         </filter>
       </defs>
-
       <g filter="url(#sealShadow)">
-        {/* drip outline — irregular wax edge */}
         <path
-          d="M50 8
-             C 62 8, 78 14, 86 28
-             C 92 38, 92 52, 88 64
-             C 84 76, 70 90, 56 91
-             C 42 92, 26 86, 16 74
-             C 8 64, 6 50, 12 36
-             C 18 22, 36 8, 50 8 Z"
+          d="M50 8 C63 8 78 15 87 29 C94 41 92 55 86 68 C80 81 67 91 52 92 C37 93 23 86 14 74 C6 63 7 48 12 35 C18 21 35 8 50 8Z"
           fill="url(#waxRed)"
-          stroke="#3d160e"
+          stroke="#3b120e"
           strokeWidth="0.8"
-          opacity="0.98"
         />
-        {/* monogram J */}
         <text
           x="50"
-          y="64"
+          y="61"
           textAnchor="middle"
-          fontFamily="'Cormorant Garamond', serif"
-          fontStyle="italic"
-          fontWeight="600"
-          fontSize="46"
-          fill="#e8d8b0"
-          opacity="0.88"
+          fontFamily="Georgia, 'Times New Roman', serif"
+          fontWeight="700"
+          fontSize="34"
+          fill="#f3e6c8"
         >
-          J
+          AI
         </text>
-        {/* tiny highlight */}
-        <ellipse cx="36" cy="28" rx="9" ry="5" fill="#e8d8b0" opacity="0.18" />
+        <ellipse cx="35" cy="27" rx="9" ry="5" fill="#f4d4bd" opacity="0.2" />
       </g>
     </svg>
   );

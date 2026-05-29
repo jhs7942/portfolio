@@ -1,306 +1,227 @@
 @import "tailwindcss";
 
-/* ============================================================
-   디자인 토큰 — The Codex of jhs
-   ============================================================ */
 :root {
-  /* 양피지 계열 — 4단계 톤 */
-  --parchment: #f5ebd4;
-  --parchment-aged: #e8d8b0;
-  --parchment-deep: #dcc795;
+  --paper: #f4ecd8;
+  --paper-deep: #e2d0a8;
+  --paper-line: rgba(73, 54, 31, 0.18);
+  --ink: #28231c;
+  --ink-soft: #5c4b36;
+  --muted: #7f6d54;
+  --brass: #bd9651;
+  --teal: #236c6a;
+  --navy: #15283c;
+  --wine: #8f2f24;
+  --cover: #142626;
+  --cover-deep: #081313;
+}
 
-  /* 잉크·세피아 계열 */
-  --wheat: #c9a877;
-  --sepia: #8b6f3a;
-  --sepia-light: #a38655;
-  --ink: #3d2a14;
-  --ink-soft: #5a4222;
-
-  /* 강조 — 봉랍 빨강 (1점 컬러) */
-  --wax-seal: #7a2e20;
-  --wax-seal-dark: #5a1f14;
-
-  /* 표지 — 가죽 어둠 */
-  --leather: #2a1a0e;
-  --leather-light: #3a2515;
-
-  /* 페이지 치수 */
-  --page-w: 540px;
-  --page-h: 740px;
-  --flip-duration: 900ms;
+* {
+  box-sizing: border-box;
 }
 
 html,
-body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-}
-
-body {
-  font-family: "EB Garamond", "Nanum Myeongjo", serif;
-  color: var(--ink);
-  background: radial-gradient(
-    ellipse at 50% 40%,
-    #3a2616 0%,
-    #1a0e06 70%,
-    #0a0502 100%
-  );
-  min-height: 100vh;
-  overflow: hidden;
-}
-
-/* 무대 조명 — 책상 위 스포트라이트 */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background:
-    radial-gradient(
-      ellipse 80% 60% at 50% 60%,
-      rgba(122, 78, 32, 0.35),
-      transparent 65%
-    ),
-    radial-gradient(
-      ellipse 50% 30% at 50% 95%,
-      rgba(0, 0, 0, 0.55),
-      transparent 70%
-    );
-  pointer-events: none;
-  z-index: 0;
-}
-
+body,
 #root {
-  position: relative;
-  z-index: 1;
+  width: 100%;
   height: 100%;
+  margin: 0;
 }
 
-/* ============================================================
-   PARCHMENT PAGE — 양피지 페이지 공용
-   ============================================================ */
+body {
+  min-width: 320px;
+  overflow: hidden;
+  font-family:
+    Georgia,
+    "Times New Roman",
+    "Nanum Myeongjo",
+    serif;
+  color: var(--ink);
+  background:
+    linear-gradient(120deg, rgba(35, 108, 106, 0.18), transparent 32%),
+    radial-gradient(circle at 50% 54%, rgba(189, 150, 81, 0.2), transparent 38%),
+    linear-gradient(135deg, #0f1c25 0%, #132f32 46%, #100f13 100%);
+}
 
-/* 양피지 페이지의 루트 컨테이너
-   주의: position 을 절대로 지정하지 말 것.
-   react-pageflip 의 .stf__item { position: absolute } 가 적용되어야 한다.
-   여기에 position: relative 를 두면 flip 애니메이션 중에 페이지가 document flow 로 떨어진다. */
-.parchment-page {
+button {
+  font: inherit;
+}
+
+.app-shell {
+  min-height: 100%;
+  display: grid;
+  place-items: center;
+  padding: 28px;
+}
+
+.book-stage {
+  width: min(100%, 1120px);
+  display: grid;
+  gap: 18px;
+  justify-items: center;
+}
+
+.book-wrap {
+  width: min(100%, 1040px);
+  height: min(72vh, 720px);
+  min-height: 430px;
+  filter: drop-shadow(0 34px 38px rgba(0, 0, 0, 0.38));
+}
+
+.book-controls {
+  display: inline-grid;
+  grid-template-columns: 42px minmax(78px, auto) 42px;
+  align-items: center;
+  gap: 10px;
+  padding: 8px;
+  border: 1px solid rgba(244, 236, 216, 0.2);
+  border-radius: 999px;
+  background: rgba(8, 19, 19, 0.72);
+  color: #f4ecd8;
+  backdrop-filter: blur(14px);
+}
+
+.book-controls button {
+  width: 42px;
+  aspect-ratio: 1;
+  border: 0;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  color: #f4ecd8;
+  background: rgba(189, 150, 81, 0.16);
+  cursor: pointer;
+}
+
+.book-controls button:hover {
+  background: rgba(189, 150, 81, 0.3);
+}
+
+.book-controls span[aria-hidden="true"] {
+  font-size: 30px;
+  line-height: 1;
+}
+
+.book-controls p {
+  margin: 0;
+  min-width: 78px;
+  text-align: center;
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  letter-spacing: 0;
+}
+
+.book-controls p span {
+  margin: 0 5px;
+  color: rgba(244, 236, 216, 0.48);
+}
+
+.parchment-page,
+.codex-cover {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background: var(--parchment);
+  position: relative;
+}
+
+.parchment-page {
+  background: var(--paper);
   color: var(--ink);
 }
 
-/* 3-layer 배경 스택 */
 .parchment-bg {
   position: absolute;
   inset: 0;
-  background-color: var(--parchment);
-  background-image:
-    radial-gradient(
-      ellipse 60% 80% at 100% 50%,
-      rgba(139, 111, 58, 0.1),
-      transparent 60%
-    ),
-    radial-gradient(
-      ellipse 100% 70% at 50% 100%,
-      rgba(139, 111, 58, 0.07),
-      transparent 70%
-    );
+  background:
+    linear-gradient(90deg, rgba(25, 20, 15, 0.08), transparent 12%),
+    radial-gradient(circle at 100% 50%, rgba(35, 108, 106, 0.08), transparent 48%),
+    linear-gradient(180deg, var(--paper), #f8f0dc 58%, var(--paper-deep));
 }
+
 .parchment-bg.verso {
-  background-image:
-    radial-gradient(
-      ellipse 60% 80% at 0% 50%,
-      rgba(139, 111, 58, 0.1),
-      transparent 60%
-    ),
-    radial-gradient(
-      ellipse 100% 70% at 50% 100%,
-      rgba(139, 111, 58, 0.07),
-      transparent 70%
-    );
+  background:
+    linear-gradient(270deg, rgba(25, 20, 15, 0.08), transparent 12%),
+    radial-gradient(circle at 0% 50%, rgba(143, 47, 36, 0.08), transparent 48%),
+    linear-gradient(180deg, var(--paper), #f8f0dc 58%, var(--paper-deep));
 }
 
 .parchment-noise {
   position: absolute;
-  inset: -2px;
+  inset: -1px;
+  opacity: 0.2;
   pointer-events: none;
-  opacity: 0.55;
-  mix-blend-mode: multiply;
-  background:
-    radial-gradient(
-      circle 6px at 20% 30%,
-      rgba(122, 46, 32, 0.08),
-      transparent 70%
-    ),
-    radial-gradient(
-      circle 4px at 78% 65%,
-      rgba(139, 111, 58, 0.1),
-      transparent 70%
-    ),
-    radial-gradient(
-      circle 8px at 60% 18%,
-      rgba(139, 111, 58, 0.06),
-      transparent 70%
-    );
-}
-.parchment-noise::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  opacity: 0.08;
-  mix-blend-mode: multiply;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='3'/><feColorMatrix values='0 0 0 0 0.31  0 0 0 0 0.22  0 0 0 0 0.10  0 0 0 0.5 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  background-image:
+    linear-gradient(var(--paper-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--paper-line) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: linear-gradient(to bottom, transparent, black 11%, black 90%, transparent);
 }
 
 .page-edge-shadow {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  box-shadow: inset 0 0 60px rgba(139, 111, 58, 0.3);
-  border-radius: inherit;
+  box-shadow:
+    inset 0 0 54px rgba(44, 32, 18, 0.24),
+    inset 0 0 0 1px rgba(81, 56, 29, 0.12);
 }
 
-/* 본문 영역 — 페이지 패딩(verso/recto는 책등 쪽 여유) */
 .page-content {
   position: absolute;
   inset: 0;
   z-index: 2;
-  padding: 64px 56px;
-  display: flex;
-  flex-direction: column;
+  padding: 54px 52px 46px;
 }
+
 .page-content.recto {
-  padding-left: 76px;
-  padding-right: 56px;
+  padding-left: 70px;
 }
+
 .page-content.verso {
-  padding-left: 56px;
-  padding-right: 76px;
+  padding-right: 70px;
 }
 
-/* ============================================================
-   FRONTISPIECE — 속표지 (cover 뒤, 첫 양피지 페이지)
-   ============================================================ */
-.frontispiece-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  text-align: center;
-  padding: 0 40px;
-}
-.frontispiece-ornament-top {
-  font-family: "Cormorant Garamond", serif;
-  font-size: 22px;
-  color: var(--wheat);
-  letter-spacing: 0.6em;
-  margin-bottom: 36px;
-}
-.frontispiece-title {
-  font-family: "Cormorant Garamond", serif;
-  font-style: italic;
-  font-weight: 500;
-  font-size: 44px;
-  line-height: 1.1;
-  color: var(--ink);
-  margin: 0 0 14px;
-}
-.frontispiece-title .of {
-  font-weight: 400;
-  color: var(--ink-soft);
-}
-.frontispiece-sub {
-  font-family: "Cormorant Garamond", serif;
-  font-variant: small-caps;
-  letter-spacing: 0.32em;
-  font-size: 12px;
-  color: var(--sepia);
-  text-transform: lowercase;
-  margin-bottom: 30px;
-}
-.frontispiece-rule {
-  width: 80px;
-  height: 1px;
-  background: var(--wheat);
-  margin: 6px 0 22px;
-  opacity: 0.7;
-}
-.frontispiece-imprint {
-  margin-top: 44px;
-  font-family: "Cormorant Garamond", serif;
-  font-variant: small-caps;
-  letter-spacing: 0.24em;
-  font-size: 11px;
-  color: var(--sepia);
-  line-height: 1.95;
-  text-transform: lowercase;
-}
-.frontispiece-imprint .imprint-roman {
-  letter-spacing: 0.4em;
-  color: var(--sepia-light);
-}
-
-/* ============================================================
-   FRONT COVER — 가죽 표지
-   ============================================================ */
 .codex-cover {
-  /* position 을 지정하지 말 것 — react-pageflip 의 .stf__item position:absolute 가 적용되어야 함. */
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  border-radius: 2px 6px 6px 2px;
-  color: var(--parchment);
+  color: #f4ecd8;
+  border-radius: 2px 8px 8px 2px;
   user-select: none;
 }
 
-/* 뒷표지 — 책등(왼쪽) 기준으로 모서리를 뒤집음 */
 .codex-cover--back {
-  border-radius: 6px 2px 2px 6px;
-}
-.codex-cover--back .codex-cover__leather {
-  background: radial-gradient(
-    ellipse at 70% 25%,
-    #4a2f1a 0%,
-    var(--leather) 60%,
-    #150904 100%
-  );
+  border-radius: 8px 2px 2px 8px;
 }
 
 .codex-cover__leather {
   position: absolute;
   inset: 0;
-  background: radial-gradient(
-    ellipse at 30% 25%,
-    #4a2f1a 0%,
-    var(--leather) 60%,
-    #150904 100%
-  );
+  background:
+    radial-gradient(circle at 30% 22%, rgba(189, 150, 81, 0.18), transparent 34%),
+    linear-gradient(135deg, #193837 0%, var(--cover) 44%, var(--cover-deep) 100%);
 }
 
-/* 가죽 결 — SVG 노이즈 (data URI) */
-.codex-cover__noise {
+.codex-cover--back .codex-cover__leather {
+  background:
+    radial-gradient(circle at 72% 24%, rgba(143, 47, 36, 0.22), transparent 34%),
+    linear-gradient(225deg, #193837 0%, var(--cover) 46%, var(--cover-deep) 100%);
+}
+
+.codex-cover__grain {
   position: absolute;
   inset: 0;
-  pointer-events: none;
-  opacity: 0.35;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><filter id='l'><feTurbulence type='fractalNoise' baseFrequency='0.55' numOctaves='3' seed='11'/><feColorMatrix values='0 0 0 0 0.08  0 0 0 0 0.04  0 0 0 0 0.02  0 0 0 0.45 0'/></filter><rect width='100%' height='100%' filter='url(%23l)'/></svg>");
+  opacity: 0.22;
+  background-image:
+    linear-gradient(35deg, transparent 0 48%, rgba(244, 236, 216, 0.12) 49%, transparent 50%),
+    linear-gradient(120deg, rgba(0, 0, 0, 0.18), transparent 30%, rgba(255, 255, 255, 0.06));
+  background-size: 18px 18px, 100% 100%;
 }
 
-/* 금박 내부 테두리 */
 .codex-cover__border {
   position: absolute;
-  inset: 22px;
-  border: 1px solid rgba(201, 168, 119, 0.35);
-  border-radius: 3px;
+  inset: 24px;
+  border: 1px solid rgba(189, 150, 81, 0.54);
+  border-radius: 5px;
   box-shadow:
-    inset 0 0 0 6px rgba(201, 168, 119, 0.05),
-    inset 0 0 60px rgba(0, 0, 0, 0.5);
-  pointer-events: none;
+    inset 0 0 0 7px rgba(189, 150, 81, 0.06),
+    inset 0 0 70px rgba(0, 0, 0, 0.48);
 }
 
 .codex-cover__content {
@@ -309,150 +230,463 @@ body::before {
   height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: space-between;
-  padding: 80px 40px 70px;
+  align-items: center;
+  padding: 72px 46px 64px;
   text-align: center;
 }
 
-.codex-cover__eyebrow {
-  font-family: "Cormorant Garamond", serif;
-  font-variant: small-caps;
-  letter-spacing: 0.5em;
-  font-size: 11px;
-  color: rgba(201, 168, 119, 0.7);
-  text-transform: lowercase;
+.codex-cover__eyebrow,
+.codex-cover__imprint,
+.codex-cover__folio,
+.frontispiece-kicker,
+.page-kicker {
+  font-family: Arial, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+}
+
+.codex-cover__eyebrow,
+.codex-cover__imprint {
+  margin: 0;
+  color: rgba(244, 236, 216, 0.72);
+  font-size: 12px;
+  line-height: 1.8;
 }
 
 .codex-cover__center {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
+  display: grid;
+  justify-items: center;
+  gap: 18px;
 }
 
-.codex-cover__ornament-top {
-  font-family: "Cormorant Garamond", serif;
-  font-size: 22px;
-  color: rgba(201, 168, 119, 0.65);
-  letter-spacing: 0.3em;
-  margin-bottom: 6px;
+.codex-cover__folio {
+  margin: 0;
+  color: var(--brass);
+  font-size: 13px;
 }
 
 .codex-cover__title {
-  font-family: "Cormorant Garamond", serif;
-  font-weight: 500;
-  font-size: 56px;
-  line-height: 1.05;
-  color: #e8d8b0;
-  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.45);
-  font-style: italic;
   margin: 0;
-  text-align: center;
+  max-width: 390px;
+  color: #f4ecd8;
+  font-size: 58px;
+  line-height: 0.98;
+  font-weight: 700;
 }
 
-.codex-cover__of {
-  font-style: italic;
-  color: rgba(232, 216, 176, 0.75);
-  font-weight: 400;
-}
-
-.codex-cover__subtitle {
-  font-family: "Cormorant Garamond", serif;
-  font-variant: small-caps;
-  letter-spacing: 0.35em;
-  font-size: 13px;
-  color: rgba(201, 168, 119, 0.85);
-  text-transform: lowercase;
-  margin-top: 4px;
+.codex-cover__title span {
+  display: block;
+  margin-top: 18px;
+  color: rgba(244, 236, 216, 0.78);
+  font-family:
+    "Malgun Gothic",
+    "Apple SD Gothic Neo",
+    sans-serif;
+  font-size: 18px;
+  line-height: 1.45;
+  font-weight: 500;
+  word-break: keep-all;
 }
 
 .codex-cover__seal {
   width: 86px;
   height: 86px;
-  margin: 14px 0 8px;
 }
 
 .codex-cover__author {
-  font-family: "Cormorant Garamond", serif;
+  margin: 0;
+  color: rgba(244, 236, 216, 0.82);
+  font-size: 17px;
   font-style: italic;
-  font-size: 16px;
-  color: rgba(201, 168, 119, 0.85);
-  letter-spacing: 0.05em;
-}
-.codex-cover__author::before {
-  content: "— ";
-}
-.codex-cover__author::after {
-  content: " —";
 }
 
-.codex-cover__imprint {
-  font-family: "Cormorant Garamond", serif;
-  font-variant: small-caps;
-  letter-spacing: 0.24em;
-  font-size: 11px;
-  color: rgba(201, 168, 119, 0.6);
-  line-height: 1.8;
-  text-transform: lowercase;
+.frontispiece-content {
+  height: 100%;
+  display: grid;
+  align-content: center;
+  gap: 24px;
+  text-align: center;
 }
 
-/* ============================================================
-   BACK COVER — 뒷표지 (sparse, dignified)
-   ============================================================ */
-.codex-back__top {
-  font-family: "Cormorant Garamond", serif;
-  font-size: 18px;
-  color: rgba(201, 168, 119, 0.5);
-  letter-spacing: 0.8em;
-  padding-left: 0.8em;
+.frontispiece-kicker {
+  margin: 0;
+  color: var(--teal);
+  font-size: 12px;
 }
 
-.codex-back__center {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.frontispiece-title {
+  margin: 0;
+  color: var(--navy);
+  font-size: 58px;
+  line-height: 1;
+}
+
+.frontispiece-subtitle {
+  width: min(100%, 390px);
+  margin: 0 auto;
+  color: var(--ink-soft);
+  font-family:
+    "Malgun Gothic",
+    "Apple SD Gothic Neo",
+    sans-serif;
+  font-size: 17px;
+  line-height: 1.7;
+  word-break: keep-all;
+}
+
+.frontispiece-meta {
+  display: grid;
+  gap: 14px;
+  margin: 20px 0 0;
+  padding: 24px 0 0;
+  border-top: 1px solid rgba(40, 35, 28, 0.18);
+  text-align: left;
+}
+
+.frontispiece-meta div {
+  display: grid;
+  grid-template-columns: 76px 1fr;
   gap: 18px;
 }
 
-.codex-back__ornament {
-  font-family: "Cormorant Garamond", serif;
-  font-size: 56px;
-  line-height: 1;
-  color: rgba(201, 168, 119, 0.7);
-  filter: drop-shadow(0 2px 0 rgba(0, 0, 0, 0.5));
-}
-
-.codex-back__rule {
-  width: 90px;
-  height: 1px;
-  background: rgba(201, 168, 119, 0.4);
-}
-
-.codex-back__epitaph {
-  font-family: "Cormorant Garamond", serif;
-  font-variant: small-caps;
-  letter-spacing: 0.5em;
+.frontispiece-meta dt {
+  color: var(--teal);
+  font-family: Arial, sans-serif;
   font-size: 11px;
-  color: rgba(201, 168, 119, 0.6);
-  text-transform: lowercase;
-  padding-left: 0.5em;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
-.codex-back__colophon {
-  font-family: "Cormorant Garamond", serif;
-  font-style: italic;
+.frontispiece-meta dd {
+  margin: 0;
+  color: var(--ink-soft);
+  font-family:
+    "Malgun Gothic",
+    "Apple SD Gothic Neo",
+    sans-serif;
   font-size: 13px;
-  color: rgba(201, 168, 119, 0.55);
-  text-align: center;
-  line-height: 1.7;
+  line-height: 1.65;
+  word-break: keep-all;
 }
-.codex-back__colophon .mark {
-  font-style: normal;
-  font-variant: small-caps;
-  letter-spacing: 0.3em;
-  color: rgba(201, 168, 119, 0.4);
-  font-size: 10px;
+
+.book-page {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.page-header {
+  display: grid;
+  gap: 10px;
+}
+
+.page-kicker {
+  margin: 0;
+  color: var(--teal);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.book-page h2 {
+  margin: 0;
+  color: var(--navy);
+  font-size: 31px;
+  line-height: 1.16;
+  letter-spacing: 0;
+  word-break: keep-all;
+}
+
+.page-lead {
+  margin: 0;
+  color: var(--ink-soft);
+  font-family:
+    "Malgun Gothic",
+    "Apple SD Gothic Neo",
+    sans-serif;
+  font-size: 15px;
+  line-height: 1.68;
+  word-break: keep-all;
+}
+
+blockquote {
+  margin: 0;
+  padding: 14px 17px;
+  border-left: 4px solid var(--wine);
+  color: var(--navy);
+  background: rgba(255, 255, 255, 0.28);
+  font-size: 18px;
+  line-height: 1.5;
+  font-style: italic;
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.stat-item {
+  min-height: 68px;
+  padding: 13px 14px;
+  border: 1px solid rgba(35, 108, 106, 0.25);
+  background: rgba(255, 255, 255, 0.26);
+}
+
+.stat-item span {
+  display: block;
+  color: var(--muted);
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+}
+
+.stat-item strong {
   display: block;
   margin-top: 6px;
+  color: var(--wine);
+  font-size: 24px;
+  line-height: 1.1;
+}
+
+.page-section {
+  display: grid;
+  gap: 6px;
+}
+
+.page-section h3 {
+  margin: 0;
+  color: var(--teal);
+  font-family:
+    "Malgun Gothic",
+    "Apple SD Gothic Neo",
+    sans-serif;
+  font-size: 14px;
+}
+
+.page-section p,
+.page-bullets,
+.page-callout,
+.page-note,
+.case-table {
+  font-family:
+    "Malgun Gothic",
+    "Apple SD Gothic Neo",
+    sans-serif;
+}
+
+.page-section p {
+  margin: 0;
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.68;
+  word-break: keep-all;
+}
+
+.page-bullets {
+  display: grid;
+  gap: 7px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.58;
+}
+
+.page-bullets li {
+  position: relative;
+  padding-left: 17px;
+}
+
+.page-bullets li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.68em;
+  width: 6px;
+  height: 6px;
+  background: var(--wine);
+  transform: rotate(45deg);
+}
+
+.page-callout,
+.page-note {
+  margin: auto 0 0;
+  padding: 13px 15px;
+  border: 1px solid rgba(143, 47, 36, 0.2);
+  color: var(--navy);
+  background: rgba(143, 47, 36, 0.07);
+  font-size: 13px;
+  line-height: 1.6;
+  word-break: keep-all;
+}
+
+.case-table {
+  width: 100%;
+  border-collapse: collapse;
+  overflow: hidden;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.case-table th,
+.case-table td {
+  padding: 9px 10px;
+  border: 1px solid rgba(40, 35, 28, 0.16);
+  vertical-align: top;
+}
+
+.case-table th {
+  color: #f4ecd8;
+  background: var(--navy);
+  text-align: left;
+}
+
+.case-table td {
+  background: rgba(255, 255, 255, 0.22);
+  word-break: keep-all;
+}
+
+.page-footer {
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid rgba(40, 35, 28, 0.16);
+  display: flex;
+  justify-content: space-between;
+  color: var(--muted);
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+}
+
+.book-page--contents {
+  justify-content: center;
+}
+
+.toc-list {
+  display: grid;
+  gap: 10px;
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.toc-list li {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(40, 35, 28, 0.14);
+}
+
+.toc-list span {
+  color: var(--wine);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.toc-list strong {
+  color: var(--ink);
+  font-family:
+    "Malgun Gothic",
+    "Apple SD Gothic Neo",
+    sans-serif;
+  font-size: 15px;
+}
+
+.codex-back {
+  justify-content: space-between;
+}
+
+.codex-back__top,
+.codex-back__colophon {
+  margin: 0;
+  color: rgba(244, 236, 216, 0.66);
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.codex-back__center {
+  display: grid;
+  justify-items: center;
+  gap: 18px;
+  color: rgba(244, 236, 216, 0.88);
+  font-family:
+    "Malgun Gothic",
+    "Apple SD Gothic Neo",
+    sans-serif;
+  font-size: 21px;
+  line-height: 1.7;
+  word-break: keep-all;
+}
+
+.codex-back__center p {
+  margin: 0;
+}
+
+.codex-back__mark {
+  width: 84px;
+  aspect-ratio: 1;
+  border: 1px solid rgba(189, 150, 81, 0.58);
+  display: grid;
+  place-items: center;
+  color: var(--brass);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 22px;
+}
+
+@media (max-width: 760px) {
+  body {
+    overflow: auto;
+  }
+
+  .app-shell {
+    align-items: start;
+    padding: 18px 12px;
+  }
+
+  .book-wrap {
+    width: min(100%, 520px);
+    height: min(78vh, 680px);
+  }
+
+  .page-content {
+    padding: 38px 30px 34px;
+  }
+
+  .page-content.recto,
+  .page-content.verso {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+
+  .codex-cover__content {
+    padding: 54px 34px 48px;
+  }
+
+  .codex-cover__title,
+  .frontispiece-title {
+    font-size: 46px;
+  }
+
+  .codex-cover__title span {
+    font-size: 16px;
+  }
+
+  .book-page h2 {
+    font-size: 25px;
+  }
+
+  .page-lead {
+    font-size: 14px;
+  }
+
+  .stat-grid {
+    grid-template-columns: 1fr;
+  }
 }

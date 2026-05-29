@@ -1,104 +1,108 @@
 import HTMLFlipBook from "react-pageflip";
-import Page from "./Pages";
-import { useRef, useState, useEffect } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import FrontCover from "./FrontCover";
 import BackCover from "./BackCover";
 import Frontispiece from "./Frontispiece";
+import { ContentsPage, ProjectPage } from "./ProjectPage";
+import { pages, tableOfContents } from "../data/projectBook";
 
-const Book = (props) => {
+const STORAGE_KEY = "ai-quiz-casebook-page";
+
+const Book = () => {
   const bookRef = useRef(null);
-  const sessionPage = Number(window.sessionStorage.getItem("page")) || 0;
-  const [page, setPage] = useState(sessionPage);
+  const initialPage = Number(window.sessionStorage.getItem(STORAGE_KEY)) || 0;
+  const [page, setPage] = useState(initialPage);
 
-  const movePage = (command) => {
+  const totalPages = useMemo(() => pages.length + 3, []);
+  const currentSpread = Math.min(page + 1, totalPages);
+
+  const movePage = (direction) => {
     const book = bookRef.current?.pageFlip();
     if (!book) return;
 
-    switch (command) {
-      case "next":
-        book.flipNext();
-        break;
-      case "prev":
-        book.flipPrev();
-        break;
+    if (direction === "next") {
+      book.flipNext();
+      return;
     }
+
+    book.flipPrev();
   };
 
   useEffect(() => {
-    window.sessionStorage.setItem("page", page);
+    window.sessionStorage.setItem(STORAGE_KEY, page);
   }, [page]);
 
   useEffect(() => {
-    console.log("시작 페이지", page);
-
-    const Wheelhandle = (e) => {
-      if (e.defaultPrevented) {
-        return; // 이미 이벤트가 실행되는 중이라면 아무 동작도 하지 않습니다.
-      }
-      if (e.deltaY > 0) {
-        movePage("next");
-      } else {
-        movePage("prev");
-      }
+    const handleWheel = (event) => {
+      if (Math.abs(event.deltaY) < 24) return;
+      movePage(event.deltaY > 0 ? "next" : "prev");
     };
 
-    const KendownHandle = (e) => {
-      if (e.defaultPrevented) {
-        return; // 이미 이벤트가 실행되는 중이라면 아무 동작도 하지 않습니다.
-      }
-      switch (e.key) {
-        case "ArrowRight":
-          movePage("next");
-          break;
-        case "ArrowLeft":
-          movePage("prev");
-          break;
-      }
+    const handleKeyDown = (event) => {
+      if (event.key === "ArrowRight") movePage("next");
+      if (event.key === "ArrowLeft") movePage("prev");
     };
 
-    // 컴포넌트 마운트 시 전역 이벤트 리스터 등록
-    window.addEventListener("wheel", Wheelhandle);
-    window.addEventListener("keydown", KendownHandle);
+    window.addEventListener("wheel", handleWheel, { passive: true });
+    window.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      window.removeEventListener("wheel", Wheelhandle);
-      window.removeEventListener("keydown", KendownHandle);
+      window.removeEventListener("wheel", handleWheel);
+      window.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
 
   return (
-    <HTMLFlipBook
-      ref={bookRef}
-      width={540}
-      height={740}
-      onFlip={(e) => setPage(e.data)}
-      showCover={true}
-      maxShadowOpacity={0.5}
-      drawShadow={true}
-      startPage={page}
-      showPageCorners={false}
-      // usePortrait={false}
-      renderOnlyPageLengthChange={true}
-    >
-      <FrontCover />
-      <Frontispiece />
-      <Page className="demoPage">Page 2</Page>
-      <Page className="demoPage">Page 3</Page>
-      <Page className="demoPage">Page 4</Page>
-      <Page className="demoPage">Page 5</Page>
-      <Page className="demoPage">Page 6</Page>
-      <Page className="demoPage">Page 7</Page>
-      <Page className="demoPage">Page 8</Page>
-      <Page className="demoPage">Page 9</Page>
-      <Page className="demoPage">Page 10</Page>
-      <Page className="demoPage">Page 11</Page>
-      <Page className="demoPage">Page 12</Page>
-      <Page className="demoPage">Page 13</Page>
-      <Page className="demoPage">Page 14</Page>
-      <Page className="demoPage">Page 15</Page>
-      <Page className="demoPage">Page 15</Page>
-      <BackCover className="demoPage">Page 16</BackCover>
-    </HTMLFlipBook>
+    <div className="book-stage">
+      <div className="book-wrap">
+        <HTMLFlipBook
+          ref={bookRef}
+          width={520}
+          height={720}
+          size="stretch"
+          minWidth={310}
+          maxWidth={520}
+          minHeight={430}
+          maxHeight={720}
+          onFlip={(event) => setPage(event.data)}
+          showCover
+          maxShadowOpacity={0.45}
+          drawShadow
+          startPage={initialPage}
+          showPageCorners={false}
+          mobileScrollSupport
+          usePortrait
+          renderOnlyPageLengthChange
+        >
+          <FrontCover />
+          <Frontispiece />
+          <ContentsPage entries={tableOfContents} />
+          {pages.map((projectPage, index) => (
+            <ProjectPage
+              key={projectPage.title}
+              page={projectPage}
+              pageNumber={index + 1}
+              side={index % 2 === 0 ? "verso" : "recto"}
+            />
+          ))}
+          <BackCover />
+        </HTMLFlipBook>
+      </div>
+
+      <nav className="book-controls" aria-label="Book navigation">
+        <button type="button" onClick={() => movePage("prev")} aria-label="Previous page">
+          <span aria-hidden="true">‹</span>
+        </button>
+        <p>
+          <strong>{currentSpread}</strong>
+          <span>/</span>
+          {totalPages}
+        </p>
+        <button type="button" onClick={() => movePage("next")} aria-label="Next page">
+          <span aria-hidden="true">›</span>
+        </button>
+      </nav>
+    </div>
   );
 };
 

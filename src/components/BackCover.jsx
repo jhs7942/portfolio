@@ -1,38 +1,29 @@
 import { forwardRef } from "react";
 
-/**
- * 뒷표지 — FrontCover와 같은 가죽 재질을 공유하되,
- * 책의 종착점답게 sparse하고 dignified한 구성.
- *
- * 공유 클래스: .codex-cover, .codex-cover__leather/noise/border/content
- * 뒷표지 전용: .codex-cover--back (border-radius 반전 + 가죽 광원 위치 반전)
- */
 const BackCover = forwardRef((props, ref) => {
   return (
-    <div
+    <section
       ref={ref}
       className="codex-cover codex-cover--back"
       data-density="hard"
     >
       <div className="codex-cover__leather" />
-      <div className="codex-cover__noise" />
+      <div className="codex-cover__grain" />
       <div className="codex-cover__border" />
 
-      <div className="codex-cover__content">
-        <div className="codex-back__top">⁂</div>
-
+      <div className="codex-cover__content codex-back">
+        <p className="codex-back__top">Endnotes</p>
         <div className="codex-back__center">
-          <div className="codex-back__ornament">❦</div>
-          <div className="codex-back__rule" />
-          <div className="codex-back__epitaph">the end of the codex</div>
+          <p className="codex-back__mark">JHS</p>
+          <p>
+            제약은 선택을 좁히고,
+            <br />
+            선택은 제품의 모양을 만든다.
+          </p>
         </div>
-
-        <div className="codex-back__colophon">
-          Thank you for reading.
-          <span className="mark">codex press · mmxxvi</span>
-        </div>
+        <p className="codex-back__colophon">Portfolio Casebook, 2026</p>
       </div>
-    </div>
+    </section>
   );
 });
 
